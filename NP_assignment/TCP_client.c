@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 	/* 客户端填充服务端的资料 */
 	bzero(&server_addr, sizeof(server_addr));
 	server_addr.sin_family = AF_INET;
-	server_addr.sin_port = htons(3333);//portnumber);
+	server_addr.sin_port = htons(3333);  //portnumber);
 	server_addr.sin_addr = *( (struct in_addr*)host->h_addr);
 
 	/* 客户端程序发起连接请求 */
