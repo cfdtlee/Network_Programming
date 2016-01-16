@@ -24,8 +24,6 @@
 
  	for( ; ; )
  	{
- 		//int n=recvfrom(sockfd,buf,16,0,(struct sockaddr *)&client_addr,&addr_len);
- 		//sendto(sockfd,buf,strlen(buf),0,(struct sockaddr *)&client_addr,sizeof(client_addr));
  		n = recvfrom(sockfd, msg, 1024, 0, (struct sockaddr*)&addr, &addrlen);
  		sendto(sockfd, msg, n, 0, (struct sockaddr*)&addr, addrlen);
  	}
