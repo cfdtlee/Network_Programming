@@ -1,19 +1,19 @@
-#include<stdio.h>
-
 /*
-Write a program in C called “count” to read a text file and print the following statistics on the screen as
-well to an output file:
-the size of the file in bytes
-number of times the search-string specified in the second argument appeared in the file
+ *This program reads a text file and print the following statistics on the screen as
+ *well to an output file:
+ *the size of the file in bytes
+ *number of times the search-string specified in the second argument appeared in the file
 */
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
 int compare(char *str, char *target);
 int main( int number_of_args, char* list_of_args[] ) 
 {
-	static const STRLEN = 1000;
-
-	char str[STRLEN];
-	int count = 0;
-	int size = 0;
+	static const int STRLEN = 1001; //max length of stream
+	char str[STRLEN]; // str store every chunck of stream
+	int count = 0; // store how many times target appear in str 
+	int size = 0; // store size of the input file
 	if ( number_of_args != 4 )
 	{
 		printf("you are supposed to provide 3 arguments for input file, search string and output file.\n");
@@ -30,30 +30,31 @@ int main( int number_of_args, char* list_of_args[] )
 		printf("the second file is invalid\n");
 		exit(-1);
 	}
-	
-	while(fgets(str, STRLEN, fin))
+	while(fgets(str, STRLEN, fin)) 
+	// when the file pointer reach the end, fgets will return 0, so while loop won't going on
 	{
 		if(strlen(str) == 1)
 		{
-			fgets(str, STRLEN, fin);
-			// printf("sss");
+			// skip empty lines
 			continue;
-		} 
+		}
 		int c, len = strlen(target);
-		// printf("%s%d", str, strlen(str));
 		c = compare(str, target);
-		// printf("c = %d\n", count);
 		count += c;
-		// if(str[strlen(str)-1] == EOF) {
-		// 	printf("%s", str);
-		// 	break;}
-		if(c == 0 && strlen(str) == STRLEN) {fseek(fin, -len, SEEK_CUR);printf("ddddd");}
-		// fgets(str, STRLEN, fin);
+		if(c == 0 && strlen(str) == STRLEN - 1) 
+		{
+			// if there is no target found in str and the length of str is equal to STRLEN - 1,
+			// it is possible the target may lay at the end of the trunk of stream
+			fseek(fin, -len, SEEK_CUR);
+		}
 	}
-	size = ftell(fin);
+	// at this point, file pointer has reached the end of file, 
+	// so ftell can return the size of the file
+	size = ftell(fin); 
 	fprintf(fout, "Size of file is %d\nNumber of matches = %d\n", size, count);
 }
 
+// compare return integer to denote how many times target appers in str
 int compare(char *str, char *target)
 {
 	int count = 0, i = 0, j = 0;
@@ -71,6 +72,5 @@ int compare(char *str, char *target)
 			count++;
 		}
 	}
-	printf("c = %d\n", count);
 	return count;
 }
