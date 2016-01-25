@@ -15,8 +15,8 @@
 #include<sys/socket.h>
 #define SERVER_PORT 8080
 
- void udp_respon(int sockfd)
- {
+void udp_respon(int sockfd)
+{
  	int n;
  	char msg[1024] = "hello world!";
  	int addrlen;
